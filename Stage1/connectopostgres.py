@@ -23,7 +23,7 @@ bookData = [
         ("Pachinko", "Min Jin Lee", "Grand Central Publishing", "Historical Fiction / Family Saga"),
         ("The Kite Runner", "Khaled Hosseini", "Riverhead Books", "Historical Fiction / Modern Literature")    
 ]
-cursor.execute(
+cursor.executemany(
     "INSERT INTO History (title, author, publisher, genre) VALUES (%s, %s, %s, %s)",
     bookData          
 )
