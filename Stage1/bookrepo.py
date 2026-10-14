@@ -10,13 +10,65 @@ def get_connection():
 
 
 def get_all_books():
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        "SELECT * FROM History"
-    )
-    rows = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return rows
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT * FROM History"
+        )
+        rows = cursor.fetchall()
+        return rows
+
+    except Exception as e:
+        print(f"Error: {Exception}")
+        return []
+    
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+
+
+def create_book(title, author, publisher, genre):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        query = """
+                INSERT INTO History(title, author, publisher, genre) 
+                VALUES (%s, %s, %s, %s)
+        """
+        cursor.execute(query, (title, author, publisher, genre))
+        conn.commit()
+        return True
+    
+    except Exception as e:
+        print(f"Error: {e}")
+        return []
+    
+    finally:
+        cursor.close()
+        conn.close()
+
+
+def get_book(book_id):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT * FROM History WHERE id = %s;",
+            (book_id,)
+        )
+        book = cursor.fetchone()
+        return book
+
+    except Exception as e:
+        print(f"error: {e}")
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
